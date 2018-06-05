@@ -16,14 +16,19 @@ firebase.initializeApp(config);
 */
 function addToDatabase() {
 	// get place id from text box
-	const placeId = document.getElementById('placeId').value;
-	const placeName = document.getElementById('placeName').value;
+	var placeId = document.getElementById('placeId').value;
+	var placeName = document.getElementById('placeName').value;
+
+	if (placeId == "" || placeName == "") {
+		alert("Name and ID fields must both be filled.");
+		return;
+	}
 
 	// get data from google geocoding
-	var geocoder = new google.maps.Geocoder();
+	const geocoder = new google.maps.Geocoder();
 	geocoder.geocode({'placeId': placeId}, function(results, status) {
 		if (status == "OK") {
-			var place = results[0];
+			const place = results[0];
 
 			alert("hi");
 
@@ -45,6 +50,9 @@ function addToDatabase() {
 	});
 }
 
+/*
+	Clears text from text boxes
+*/
 function clear() {
 	document.getElementById('placeId').value = "";
 	document.getElementById('placeName').value = "";
