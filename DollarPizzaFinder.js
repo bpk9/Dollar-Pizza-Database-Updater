@@ -30,8 +30,6 @@ function addToDatabase() {
 		if (status == "OK") {
 			const place = results[0];
 
-			alert("hi");
-
 			// set data in firebase
 			firebase.database().ref('locations/' + placeName).set({
 				latitude: place.geometry.location.lat(),
