@@ -4,3 +4,9 @@ body {
 h1 {
 	color: red;
 }
+#map {
+	margin-left: auto;
+	margin-right: auto;
+    height: 400px;
+    width: 60%; 
+}
