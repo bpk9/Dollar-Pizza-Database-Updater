@@ -73,13 +73,24 @@ function addToDatabase() {
 	if (placeId == "") {
 		alert("Search for a place to add!");
 	} else {
-		// set data in firebase
-		firebase.database().ref('locations/' + placeName + " - " + placeStreet).set({
-			latitude: placeLocation.lat(),
-			longitude: placeLocation.lng(),
-			placeId: placeId
+
+		const database = firebase.database().ref("locations");
+		const childName = placeName + " - " + placeStreet;
+
+		// check if location is already in database
+		database.child(childName).once('value', function(snapshot) {
+  			if (snapshot.exists()) {
+    			alert(placeName + " is already in the database!");
+  			} else {
+  				// set data in firebase
+				database.child(childName).set({
+					latitude: placeLocation.lat(),
+					longitude: placeLocation.lng(),
+					placeId: placeId
+				});
+				alert(placeName + " successfully added to database!")
+  			}
 		});
-		alert(placeName + " successfully added to database!")
 	}
 
 }
