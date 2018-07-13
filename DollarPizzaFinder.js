@@ -16,7 +16,6 @@ firebase.initializeApp(config);
 */
 var placeName;
 var placeId;
-var placeAddress;
 
 /*
 	Initialize Google Map
@@ -53,7 +52,6 @@ function initMap() {
         placeId = place.place_id;
         placeLocation = place.geometry.location;
         placeStreet = place.address_components[1]['long_name'];
-        placeAddress = place.formatted_address;
 
         marker.setPosition(place.geometry.location);
 
@@ -88,7 +86,6 @@ function addToDatabase() {
 				database.child(childName).set({
 					latitude: placeLocation.lat(),
 					longitude: placeLocation.lng(),
-          address: placeAddress,
 					placeId: placeId
 				});
 				alert(placeName + " successfully added to database!")
