@@ -70,7 +70,7 @@ function initMap() {
 */
 function addToDatabase() {
 
-	if (placeId == "") {
+	if (placeId == "" || placeId == null) {
 		alert("Search for a place to add!");
 	} else {
 
@@ -80,7 +80,7 @@ function addToDatabase() {
 		// check if location is already in database
 		database.child(childName).once('value', function(snapshot) {
   			if (snapshot.exists()) {
-    			alert(placeName + " is already in the database!");
+    				alert(placeName + " is already in the database!");
   			} else {
   				// set data in firebase
 				database.child(childName).set({
