@@ -2,7 +2,7 @@
 	Initialize Firebase Database
 */
 const config = {
-		apiKey: "AIzaSyBkw8JCB6ah8qlDmp7FhEC07x7Y9YSeu8Y",
+		apiKey: "",
 		authDomain: "dpf8790.firebaseapp.com",
 		databaseURL: "https://dpf8790.firebaseio.com",
 		projectId: "dpf8790",
@@ -14,9 +14,7 @@ firebase.initializeApp(config);
 /*
 	Variables
 */
-var placeName;
-var placeId;
-var placeStreet;
+var pizza;
 
 /*
 	Initialize Google Map
@@ -49,9 +47,8 @@ function initMap() {
             map.setZoom(17);  // Why 17? Because it looks good.
         }
 
-        placeName = place.name;
-        placeId = place.place_id;
-        placeStreet = place.address_components[1]['long_name'];
+        // fill data for pizza place
+        pizza = place;
 
         marker.setPosition(place.geometry.location);
 
@@ -70,12 +67,12 @@ function initMap() {
 */
 function addToDatabase() {
 
-	if (placeId == "" || placeId == null) {
+    if (pizza.place_id == "" || pizza.place_id == null) {
 		alert("Search for a place to add!");
 	} else {
 
-		const database = firebase.database().ref("locations");
-		const childName = placeName + " - " + placeStreet;
+        const database = firebase.database().ref("locations");
+		const childName = pizza.name + " - " + pizza.address_components[1]['long_name'];;
 
 		// check if location is already in database
 		database.child(childName).once('value', function(snapshot) {
@@ -83,10 +80,26 @@ function addToDatabase() {
     				alert(placeName + " is already in the database!");
   			} else {
   				// set data in firebase
-				database.child(childName).set({
-					placeId: placeId
+                database.child(childName).set({
+                                              name: pizza.name,
+                                              formatted_address: pizza.formatted_address,
+                                              formatted_phone_number: pizza.formatted_phone_number,
+                                              geometry: {
+                                                location: {
+                                                    lat: pizza.geometry.location.lat(),
+                                                    lng: pizza.geometry.location.lng()
+                                                }
+                                              },
+                                              icon: pizza.icon,
+                                              place_id: pizza.place_id,
+                                              rating: pizza.rating,
+                                              website: pizza.website,
+                                              opening_hours: {
+                                                periods: pizza.opening_hours.periods
+                                              },
+                                              reviews: pizza.reviews
 				});
-				alert(placeName + " successfully added to database!")
+                alert(pizza.name + " successfully added to database!");
   			}
 		});
 	}
